@@ -2,9 +2,12 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Einkaufsliste.MainPage">
+    <!-- Hauptseite der Einkaufslisten-App -->
+    <!-- Hier werden die Bedienelemente (Buttons) und die Liste angezeigt -->
     
     <ScrollView>
-        <Grid Padding="30,0">
+            <Grid Padding="30,0">
+                <!-- Grid enthält Kopfzeile mit Buttons und darunter die CollectionView -->
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
@@ -20,12 +23,14 @@
             </Grid.RowDefinitions>
             
             
+            <!-- Button zum Hinzufügen eines neuen Listenelements -->
             <Button Grid.Column="0" Grid.Row="1"
             Text="+" 
             Clicked="Btn_Add_Clicked"
             BackgroundColor="#512BD4"
             FontSize="20"/>
 
+            <!-- Einstellungen: helle Variante (sichtbar je nach Theme) -->
             <ImageButton x:Name="Btn_ligth_mode_settings" Grid.Column="2" Grid.Row="1"
                  Source="light_mode_settings.png"
                  WidthRequest="40"
@@ -34,6 +39,7 @@
                  Clicked="Btn_Settings_Clicked"/>
 
 
+            <!-- Einstellungen: dunkle Variante (sichtbar je nach Theme) -->
             <ImageButton x:Name="Btn_dark_mode_settings" Grid.Column="2" Grid.Row="1"
                  Source="dark_mode_settings.png"
                  WidthRequest="40"
@@ -42,6 +48,7 @@
                  Clicked="Btn_Settings_Clicked"/>
 
 
+            <!-- Umschalter für dunkles Design -->
             <ImageButton x:Name="Btn_dark_mode" Grid.Column="3" Grid.Row="1"
                    Source="dark_mode_button.png"
                    WidthRequest="40"
@@ -49,6 +56,7 @@
                    Background="Transparent"
                    Clicked="Btn_Dark_Mode_Clicked" />
 
+            <!-- Umschalter für helles Design -->
             <ImageButton x:Name="Btn_light_mode" Grid.Column="3" Grid.Row="1"
                          Source="light_mode_button.png"
                          WidthRequest="40"
@@ -56,6 +64,7 @@
                          Background="Transparent"
                          Clicked="Btn_Add_Clicked_Mode_Clicked"/>
 
+            <!-- Liste der Einkäufe: CollectionView zeigt alle Einträge an -->
             <CollectionView x:Name="clv_groceries" Grid.Row="3" Grid.ColumnSpan="4">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>

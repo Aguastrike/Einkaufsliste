@@ -21,9 +21,9 @@
 
         private void CheckBox_BindingContextChanged(object sender, EventArgs e)
         {
-            // Reset visual checked state when the template is reused for a new item.
-            // Temporarily detach the CheckedChanged handler so resetting IsChecked
-            // does not trigger the deletion logic for a recycled template.
+            // Visuellen Checked-Zustand zurücksetzen, wenn die Vorlage für ein neues Element wiederverwendet wird.
+            // Vorübergehend den CheckedChanged-Handler abmelden, damit das Zurücksetzen von IsChecked
+            // die Löschlogik für eine wiederverwendete Vorlage nicht auslöst.
             if (sender is CheckBox cb)
             {
                 cb.CheckedChanged -= CheckBox_CheckedChanged;
@@ -54,7 +54,7 @@
 
         public void Btn_Dark_Mode_Clicked(object sender, EventArgs e)
         {
-            // Switch the app to dark mode
+            // App auf Dunkelmodus umschalten
             Application.Current.UserAppTheme = AppTheme.Dark;
             Btn_dark_mode.IsVisible = false;
             Btn_dark_mode.IsEnabled = false;
@@ -71,7 +71,7 @@
 
         public void Btn_Add_Clicked_Mode_Clicked(object sender, EventArgs e)
         {
-            // Switch the app to light mode
+            // App auf Hellmodus umschalten
             Application.Current.UserAppTheme = AppTheme.Light;
             Btn_dark_mode.IsVisible = true;
             Btn_dark_mode.IsEnabled = true;
@@ -89,7 +89,7 @@
             if (sender is not CheckBox cb || cb.BindingContext is not string item)
                 return;
 
-            // If unchecked, cancel any pending deletion for this item
+            // Wenn deaktiviert, eine ausstehende Löschung dieses Elements abbrechen
             if (!e.Value)
             {
                 lock (_pendingLock)
@@ -105,11 +105,11 @@
                 return;
             }
 
-            // When checked, schedule deletion after 5 seconds but allow cancellation
+            // Wenn aktiviert, Löschung nach 5 Sekunden planen, aber Stornierung ermöglichen
             var tokenSource = new CancellationTokenSource();
             lock (_pendingLock)
             {
-                // If there's already a pending deletion, cancel it first
+                // Falls bereits eine Löschung aussteht, diese zuerst abbrechen
                 if (_pendingDeletions.TryGetValue(item, out var existing))
                 {
                     existing.Cancel();
@@ -120,14 +120,14 @@
                 _pendingDeletions[item] = tokenSource;
             }
 
-            // Fire-and-forget task to wait and then remove the item on the UI thread
+            // Hintergrundtask: warten und dann das Element im UI-Thread entfernen
             _ = Task.Run(async () =>
             {
                 try
                 {
                     await Task.Delay(TimeSpan.FromSeconds(5), tokenSource.Token);
 
-                    // If not cancelled, remove the item on the UI thread and save
+                    // Wenn nicht abgebrochen, Element im UI-Thread entfernen und speichern
                     await Dispatcher.DispatchAsync(async () =>
                     {
                         GroceryStorage.Items.Remove(item);
@@ -136,7 +136,7 @@
                 }
                 catch (OperationCanceledException)
                 {
-                    // cancellation requested - do nothing
+                    // Abbruch angefordert - nichts tun
                 }
                 finally
                 {
