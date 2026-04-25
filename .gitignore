@@ -1,0 +1,20 @@
+# Build-Ordner
+bin/
+obj/
+
+# User-spezifische Dateien
+*.user
+*.userosscache
+*.suo
+
+# VS
+.vs/
+
+# Logs
+*.log
+
+# MAUI / Plattform-spezifisches
+**/Platforms/Android/bin/
+**/Platforms/Android/obj/
+**/Platforms/iOS/bin/
+**/Platforms/iOS/obj/
